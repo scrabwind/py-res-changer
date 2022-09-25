@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "reschanger"
+version = "1.0"
+description = "Change resolution with use of system tray"
+authors = ["scrabwind <scrabwind@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pywin32 = "^304"
+pystray = "^0.19.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

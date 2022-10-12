@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.9"
 pywin32 = "^304"
 pystray = "^0.19.4"
+numpy = "^1.23.3"
+sounddevice = "^0.4.5"
 
 
 [build-system]

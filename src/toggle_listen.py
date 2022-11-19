@@ -1,7 +1,7 @@
-import sounddevice as sd
 import numpy
-assert numpy
+import sounddevice as sd
 
+assert numpy
 
 default_input = sd.query_devices(kind='output')
 ps5 = sd.query_devices('Monitor - PS5 (High Definition , MME')
@@ -22,7 +22,6 @@ def get_devices(inp: str, out: str):
 
 devices = get_devices(default_input['name'], default_output['name'])
 
-
 stream = sd.Stream(device=devices, callback=callback, latency=0.05)
 
 
@@ -39,6 +38,6 @@ def on_listen_stop():
     if not stream.active:
         return
     try:
-        stream.close()
+        stream.stop()
     except Exception as e:
         stream.abort()

@@ -11,6 +11,7 @@ pywin32 = "^304"
 pystray = "^0.19.4"
 numpy = "^1.23.3"
 sounddevice = "^0.4.5"
+PyAutoGUI = "^0.9.53"
 
 
 [build-system]

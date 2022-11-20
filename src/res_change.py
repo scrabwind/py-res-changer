@@ -1,4 +1,5 @@
 import os
+import sys
 
 import pystray
 import pywintypes
@@ -51,8 +52,7 @@ def main():
         item.stop()
 
     try:
-        # icon_folder = os.path.join(sys._MEIPASS, 'assets')
-        icon_folder = os.path.join("assets")
+        icon_folder = os.path.join(sys._MEIPASS, 'assets')
         image = Image.open(icon_folder + "/peepo.png")
 
         icon = pystray.Icon("Resolution Switcher")

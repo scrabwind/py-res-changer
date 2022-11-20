@@ -20,7 +20,7 @@ def get_devices(inp: str, out: str):
     return formatted_out, formatted_in
 
 
-devices = get_devices(default_input['name'], default_output['name'])
+devices = get_devices(default_input['name'], ps5['name'])
 
 stream = sd.Stream(device=devices, callback=callback, latency=0.05)
 

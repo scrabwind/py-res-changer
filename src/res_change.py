@@ -42,13 +42,12 @@ def on_monitor_change(icon, item):
         extend_monitors()
 
 
-def on_quit():
-    on_listen_stop()
-    icon.visible = False
-    icon.stop()
+def main():
+    def on_quit():
+        on_listen_stop()
+        icon.visible = False
+        icon.stop()
 
-
-if __name__ == "__main__":
     try:
         image = Image.open("../assets/peepo.png")
 
@@ -62,5 +61,6 @@ if __name__ == "__main__":
 
         icon = pystray.Icon("Resolution Switcher", image, "Resolution Switcher", menu)
         icon.run()
-    except Exception:
+    except Exception as e:
         on_quit()
+        raise e

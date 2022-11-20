@@ -32,6 +32,7 @@ def on_listen_start():
         stream.start()
     except Exception as e:
         stream.close()
+        raise e
 
 
 def on_listen_stop():
@@ -41,3 +42,4 @@ def on_listen_stop():
         stream.stop()
     except Exception as e:
         stream.abort()
+        raise e

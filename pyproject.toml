@@ -4,14 +4,16 @@ version = "1.0"
 description = "Change resolution with use of system tray"
 authors = ["scrabwind <scrabwind@gmail.com>"]
 readme = "README.md"
+repository = "https://github.com/scrabwind/py-res-changer"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.12"
 pywin32 = "^304"
 pystray = "^0.19.4"
 numpy = "^1.23.3"
-sounddevice = "^0.4.5"
 PyAutoGUI = "^0.9.53"
+pyinstaller = "^5.6.2"
+sounddevice = "^0.4.5"
 
 
 [build-system]

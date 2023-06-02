@@ -1,5 +1,7 @@
 import os
+import subprocess
 import sys
+from pathlib import Path
 
 import pystray
 import pywintypes
@@ -8,12 +10,23 @@ import win32con
 from PIL import Image
 from pystray import MenuItem
 
-from clone_extend_monitors import clone_monitors, extend_monitors
 from dpi_change import set_dpi
 from toggle_listen import on_listen_start, on_listen_stop
 
 is_listening = False
 is_monitor_cloned = False
+
+bundle_dir = Path.cwd()
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    bundle_dir = Path(sys._MEIPASS)
+else:
+    bundle_dir = Path(__file__).parent
+
+
+def on_clone_extend_monitor():
+    exe_folder = os.path.join(bundle_dir, 'external')
+    subprocess.run([exe_folder + "/CloneMonitors.exe"])
 
 
 def on_set_resolution(width: int, height: int, dpi: int):
@@ -39,10 +52,7 @@ def on_listen(icon, item):
 def on_monitor_change(icon, item):
     global is_monitor_cloned
     is_monitor_cloned = not item.checked
-    if is_monitor_cloned:
-        clone_monitors()
-    else:
-        extend_monitors()
+    on_clone_extend_monitor()
 
 
 def main():
@@ -52,7 +62,7 @@ def main():
         item.stop()
 
     try:
-        icon_folder = os.path.join(sys._MEIPASS, 'assets')
+        icon_folder = os.path.join(bundle_dir, 'assets')
         image = Image.open(icon_folder + "/peepo.png")
 
         icon = pystray.Icon("Resolution Switcher")

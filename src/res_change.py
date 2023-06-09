@@ -14,7 +14,6 @@ from dpi_change import set_dpi
 from toggle_listen import on_listen_start, on_listen_stop
 
 is_listening = False
-is_monitor_cloned = False
 
 bundle_dir = Path.cwd()
 
@@ -26,7 +25,7 @@ else:
 
 def on_clone_extend_monitor():
     exe_folder = os.path.join(bundle_dir, 'external')
-    subprocess.run([exe_folder + "/CloneMonitors.exe"])
+    subprocess.run([exe_folder + "/CloneMonitors.exe"], creationflags=0x08000000)
 
 
 def on_set_resolution(width: int, height: int, dpi: int):
@@ -40,7 +39,7 @@ def on_set_resolution(width: int, height: int, dpi: int):
     win32api.ChangeDisplaySettings(devmode, 0)
 
 
-def on_listen(icon, item):
+def on_listen(_icon, item):
     global is_listening
     is_listening = not item.checked
     if is_listening:
@@ -49,17 +48,20 @@ def on_listen(icon, item):
         on_listen_stop()
 
 
-def on_monitor_change(icon, item):
-    global is_monitor_cloned
-    is_monitor_cloned = not item.checked
+def on_monitor_change():
     on_clone_extend_monitor()
 
 
 def main():
     def on_quit(item):
-        on_listen_stop()
-        item.visible = False
-        item.stop()
+        try:
+            on_listen_stop()
+            item.visible = False
+            item.stop()
+        except Exception() as e:
+            print(e)
+        finally:
+            sys.exit(0)
 
     try:
         icon_folder = os.path.join(bundle_dir, 'assets')
@@ -71,7 +73,7 @@ def main():
             MenuItem('1440p', lambda: on_set_resolution(2560, 1440, 125)),
             MenuItem('1080p', lambda: on_set_resolution(1920, 1080, 100)),
             MenuItem("PS5 Sound", on_listen, lambda item: is_listening),
-            MenuItem("Clone/Extend Monitors", on_monitor_change, lambda item: is_monitor_cloned),
+            MenuItem("Clone/Extend Monitors", on_monitor_change),
             MenuItem('Quit', lambda: on_quit(icon))
         )
 

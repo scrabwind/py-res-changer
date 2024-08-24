@@ -11,20 +11,20 @@ from PIL import Image
 from pystray import MenuItem
 
 from dpi_change import set_dpi
-from toggle_listen import on_listen_start, on_listen_stop
+from toggle_listen import on_listen_start, on_listen_stop, is_ps5_connected
 
 is_listening = False
 
 bundle_dir = Path.cwd()
 
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
     bundle_dir = Path(sys._MEIPASS)
 else:
     bundle_dir = Path(__file__).parent
 
 
 def on_clone_extend_monitor():
-    exe_folder = os.path.join(bundle_dir, 'external')
+    exe_folder = os.path.join(bundle_dir, "external")
     subprocess.run([exe_folder + "/CloneMonitors.exe"], creationflags=0x08000000)
 
 
@@ -42,10 +42,13 @@ def on_set_resolution(width: int, height: int, dpi: int):
 def on_listen(_icon, item):
     global is_listening
     is_listening = not item.checked
-    if is_listening:
-        on_listen_start()
-    else:
-        on_listen_stop()
+    try:
+        if is_listening:
+            on_listen_start()
+        else:
+            on_listen_stop()
+    except Exception:
+        pass
 
 
 def on_monitor_change():
@@ -64,17 +67,23 @@ def main():
             sys.exit(0)
 
     try:
-        icon_folder = os.path.join(bundle_dir, 'assets')
+        icon_folder = os.path.join(bundle_dir, "assets")
         image = Image.open(icon_folder + "/peepo.png")
 
         icon = pystray.Icon("Resolution Switcher")
 
         menu = (
-            MenuItem('1440p', lambda: on_set_resolution(2560, 1440, 125)),
-            MenuItem('1080p', lambda: on_set_resolution(1920, 1080, 100)),
-            MenuItem("PS5 Sound", on_listen, lambda item: is_listening),
+            MenuItem("1440p", lambda: on_set_resolution(2560, 1440, 125)),
+            MenuItem("1080p", lambda: on_set_resolution(1920, 1080, 100)),
+            MenuItem("Valo res", lambda: on_set_resolution(1280, 883, 100)),
+            MenuItem(
+                "PS5 Sound",
+                on_listen,
+                lambda item: is_listening,
+                enabled=is_ps5_connected,
+            ),
             MenuItem("Clone/Extend Monitors", on_monitor_change),
-            MenuItem('Quit', lambda: on_quit(icon))
+            MenuItem("Quit", lambda: on_quit(icon)),
         )
 
         icon.icon = image

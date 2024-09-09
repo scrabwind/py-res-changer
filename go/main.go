@@ -98,7 +98,7 @@ func onReady() {
 	go handleChangeResolution(mFHD, C.uint(1920), C.uint(1080), 100)
 	mValo := systray.AddMenuItem("Valo res", "")
 	go handleChangeResolution(mValo, C.uint(1280), C.uint(880), 100)
-	mSound := systray.AddMenuItemCheckbox("ps5 sound", "", isSoundOn)
+	mSound := systray.AddMenuItemCheckbox("PS5 sound", "", isSoundOn)
 
 	go func() {
 		portaudio.Initialize()
@@ -135,7 +135,7 @@ func initStream() (*sound, error) {
 	for _, device := range devices {
 		if device.HostApi.Name == "Windows WASAPI" &&
 			strings.Contains(device.Name, "CODEC") &&
-			strings.Contains(device.Name, "Mikrofon") {
+			strings.Contains(device.Name, "PS5") {
 			p := portaudio.LowLatencyParameters(device, device.HostApi.DefaultOutputDevice)
 			p.Input.Channels = 1
 			p.Output.Channels = 1

@@ -87,7 +87,7 @@ func main() {
 }
 
 func onReady() {
-	b, err := os.ReadFile("./peepo.ico")
+	b, err := os.ReadFile("../peepo.ico")
 	chk(err)
 	systray.SetIcon(b)
 	systray.SetTitle("Resolution Changer")

@@ -103,8 +103,13 @@ func onReady() {
 	go func() {
 		portaudio.Initialize()
 		sound, err := initStream()
+
+		defer portaudio.Terminate()
+		defer sound.Close()
+
 		if err != nil {
 			mSound.Disable()
+			sound.Abort()
 			portaudio.Terminate()
 			return
 		}
@@ -119,7 +124,6 @@ func onReady() {
 }
 
 func onExit() {
-	portaudio.Terminate()
 	systray.Quit()
 }
 

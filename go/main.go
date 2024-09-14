@@ -82,8 +82,8 @@ func mHandleSound(mSound *systray.MenuItem, stream *sound) {
 }
 
 func main() {
-	log.Println("Opened app")
 	systray.Run(onReady, onExit)
+	log.Println("Opened app")
 }
 
 func onReady() {

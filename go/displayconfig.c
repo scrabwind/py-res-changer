@@ -43,13 +43,14 @@ void clone_extend()
 void set_resolution(const unsigned int *width, const unsigned int *height) {
     DEVMODE dev;
     ZeroMemory(&dev, sizeof(DEVMODE));
-    dev.dmSize = sizeof(DEVMODE);
 
     // Get the current display settings
     if (EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &dev)) {
         // Set the new resolution
         dev.dmPelsWidth = *width;
         dev.dmPelsHeight = *height;
+        dev.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
+        dev.dmSize = sizeof(DEVMODE);
 
         // Change the display settings
         ChangeDisplaySettings(&dev, 0);

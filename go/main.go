@@ -17,6 +17,7 @@ import (
 
 	"github.com/getlantern/systray"
 	"github.com/gordonklaus/portaudio"
+	"github.com/tawesoft/golib/v2/dialog"
 	"golang.org/x/sys/windows/registry"
 )
 
@@ -83,10 +84,10 @@ func mHandleSound(mSound *systray.MenuItem, stream *sound) {
 
 func main() {
 	systray.Run(onReady, onExit)
-	log.Println("Opened app")
 }
 
 func onReady() {
+	log.Println("Opened app")
 	b, err := os.ReadFile("../peepo.ico")
 	chk(err)
 	systray.SetIcon(b)
@@ -101,7 +102,11 @@ func onReady() {
 	mSound := systray.AddMenuItemCheckbox("PS5 sound", "", isSoundOn)
 
 	go func() {
-		portaudio.Initialize()
+		err = portaudio.Initialize()
+		if err != nil {
+			dialog.Error(err.Error())
+			return
+		}
 		defer portaudio.Terminate()
 
 		sound, err := initStream()
@@ -127,6 +132,7 @@ func onExit() {
 
 func chk(err error) {
 	if err != nil {
+		dialog.Error(err.Error())
 		panic(err)
 	}
 }
